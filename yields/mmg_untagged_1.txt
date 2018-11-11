@@ -1,0 +1,5 @@
+bin     cat1       cat1      cat1       cat1       cat1      cat1
+process     ttH_hzg     ZH_hzg      WH_hzg      qqH_hzg     ggH_hzg     bgr
+process     -4      -3      -2      -1      0       1
+rate 0.034361     0.095801     0.103613     0.290104     7.579612     1.000000
+-------------------------------------------------------------

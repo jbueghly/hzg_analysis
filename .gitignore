@@ -1,0 +1,10 @@
+# directories
+data/
+dataset/
+plots/
+post_training/
+signal_yields/
+signal_yields_new/
+tmp_fits/
+tmva_stuff/
+.ipynb_checkpoints/

@@ -1,0 +1,5 @@
+bin     cat4       cat4      cat4       cat4       cat4      cat4
+process     ttH_hzg     ZH_hzg      WH_hzg      qqH_hzg     ggH_hzg     bgr
+process     -4      -3      -2      -1      0       1
+rate 0.042863     0.033668     0.059564     0.119009     0.603025     1.000000
+-------------------------------------------------------------

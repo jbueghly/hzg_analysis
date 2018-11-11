@@ -1,0 +1,5 @@
+bin     cat52       cat52      cat52       cat52       cat52      cat52
+process     ttH_hzg     ZH_hzg      WH_hzg      qqH_hzg     ggH_hzg     bgr
+process     -4      -3      -2      -1      0       1
+rate 0.011355     0.004904     0.006473     0.155630     0.206473     1.000000
+-------------------------------------------------------------
