@@ -14,6 +14,7 @@ if __name__ == '__main__':
 
     channels = ['mumug', 'elelg']
 
+    #mc = ['ttbar_inclusive', 'zjets_m-50_amc', 'zg_llg', 'hzg_gluglu', 'hzg_tth', 'hzg_vbf', 'hzg_wh', 'hzg_zh']
     mc = ['zjets_m-50_amc', 'zg_llg', 'hzg_gluglu', 'hzg_tth', 'hzg_vbf', 'hzg_wh', 'hzg_zh']
     #mc = ['hzg_gluglu', 'hzg_tth', 'hzg_vbf', 'hzg_wh', 'hzg_zh']
     muon_data = ['muon_2016B', 'muon_2016C', 'muon_2016D', 'muon_2016E', 

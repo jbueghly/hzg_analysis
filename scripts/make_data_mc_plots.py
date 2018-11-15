@@ -3,58 +3,40 @@
 from root_pandas import read_root
 import pandas as pd
 import numpy as np
+from tqdm import tqdm
 import matplotlib.pyplot as plt
 plt.style.use('classic')
 plt.rc('figure', facecolor='w', figsize=(10,10))
 plt.rc('axes', labelsize=48)
 plt.rc('axes', titlesize=24)
 
-runs = ['B', 'C', 'D', 'E', 'F', 'G', 'H']
-df_muon_list = []
-df_electron_list = []
-for run in runs:
-    df_muon_list.append(read_root('data/step1_phores/output_mumug_2016_flat.root', 'muon_2016'+run))
-    df_electron_list.append(read_root('data/step1_phores/output_elelg_2016_flat.root', 'electron_2016'+run))
-df_mu_gluglu = read_root('data/step1_phores/output_mumug_2016_flat.root', 'hzg_gluglu').astype('float')
-df_mu_vbf = read_root('data/step1_phores/output_mumug_2016_flat.root', 'hzg_vbf').astype('float')
-df_muon = pd.concat(df_muon_list).astype('float')
-df_ele_gluglu = read_root('data/step1_phores/output_elelg_2016_flat.root', 'hzg_gluglu').astype('float')
-df_ele_vbf = read_root('data/step1_phores/output_elelg_2016_flat.root', 'hzg_vbf').astype('float')
-df_electron = pd.concat(df_electron_list).astype('float')
-df_zjets_mu = read_root('data/step1_phores/output_mumug_2016_flat.root', 'zjets_m-50_amc').query('not vetoDY')
-df_zjets_ele = read_root('data/step1_phores/output_elelg_2016_flat.root', 'zjets_m-50_amc').query('not vetoDY')
-df_zjets = pd.concat([df_zjets_mu, df_zjets_ele]).astype('float')
-df_zg_mu = read_root('data/step1_phores/output_mumug_2016_flat.root', 'zg_llg').astype('float')
-df_zg_ele = read_root('data/step1_phores/output_elelg_2016_flat.root', 'zg_llg').astype('float')
-df_zg = pd.concat([df_zg_mu, df_zg_ele]).astype('float')
-df_ttbar_mu = read_root('data/step1_phores/output_mumug_2016_flat.root', 'ttbar_inclusive').astype('float')
-df_ttbar_ele = read_root('data/step1_phores/output_elelg_2016_flat.root', 'ttbar_inclusive').astype('float')
+def make_data_mc_plot(dataset_list, datasets, feature, channel, lut_datasets, lut_feature, do_ratio=True):
 
-def make_data_mc_plot(feature, nbins, xrange, xlabel, title, channel):
-#feature = 'photonOneR9'
-#nbins = 40
-#xrange = [0., 1.]
-    labels = ['Z + jets', 'SM $\sf Z\gamma$', r'$\sf t\bar{t}$']
-    fig, ax = plt.subplots()
-    if channel == 'muon':
-        dataframes = [df_zjets_mu, df_zg_mu, df_ttbar_mu]
-        df_data = df_muon
+    if do_ratio:
+        fig, axes = plt.subplots(2, 1, sharex=True, gridspec_kw={'height_ratios':[3,1]})
+        fig.subplots_adjust(hspace=0)
+        ax= axes[0]
     else:
-        dataframes = [df_zjets_ele, df_zg_ele, df_ttbar_ele]
-        df_data = df_electron
-#dataframes = [df_zjets_mu.query(condition), df_zg_mu.query(condition)]
+        fig, ax = plt.subplots(1, 1)
+
+    labels = []
+    colors = []
     stack_data = []
     stack_weights = []
-    colors = ['r', 'g', 'b']
-    for dataframe in dataframes:
-        stack_data.append(dataframe[feature])
-        stack_weights.append(dataframe['eventWeight']*dataframe['genWeight'])
+    for i, dataset_name in enumerate(dataset_list):
+        if dataset_name != 'data':
+            labels.append(lut_datasets.loc[dataset_name].text)
+            colors.append(lut_datasets.loc[dataset_name].color)
+            stack_data.append(datasets[i][feature])
+            stack_weights.append(datasets[i]['eventWeight']*datasets[i]['genWeight'])
+        else:
+            y, bins = np.histogram(datasets[i][feature], bins=int(lut_feature.n_bins), range=[lut_feature.xmin, lut_feature.xmax])
+            x = (bins[1:] + bins[:-1])/2.
+            yerr = np.sqrt(y)
+   
     stack, bins, p = ax.hist(stack_data,
-                             #bins      = int(lut_entry.n_bins),
-                             bins = nbins,
-                             #bins      = my_bins, # if bayesian binning
-                             #range     = (lut_entry.xmin, lut_entry.xmax),
-                             range     = xrange,
+                             bins       = int(lut_feature.n_bins),
+                             range     = [lut_feature.xmin, lut_feature.xmax],
                              color     = colors,
                              alpha     = 1.,
                              linewidth = 0.5,
@@ -63,40 +45,93 @@ def make_data_mc_plot(feature, nbins, xrange, xlabel, title, channel):
                              weights   = stack_weights,
                              label = labels
                             )
-    y, bins = np.histogram(df_data[feature], bins=nbins, range=xrange)
-    #y, bins = np.histogram(df_muon.query(condition)[feature], bins=nbins, range=xrange)
-    x = (bins[1:] + bins[:-1])/2.
-    yerr = np.sqrt(y)
+
+    stack_noscale = np.histogram(np.concatenate(stack_data),
+                                 bins = int(lut_feature.n_bins),
+                                 range = [lut_feature.xmin, lut_feature.xmax],
+                                 weights = np.concatenate(stack_weights)**2
+                                 )[0]
+
+    stack_sum = stack[-1] if len(stack_data) > 1 else stack
+    stack_x = (bins[1:] + bins[:-1])/2.
+    stack_err = np.sqrt(stack_noscale)
+    
+    if do_ratio:
+        denominator = (stack_x, stack_sum, stack_err)
+
+    no_blanks = stack_sum > 0
+    stack_sum, stack_x, stack_err = stack_sum[no_blanks], stack_x[no_blanks], stack_err[no_blanks]
+    ax.errorbar(stack_x, stack_sum, yerr=stack_err,
+                fmt = 'none', 
+                ecolor = 'k', 
+                capsize = 0,
+                elinewidth = 10,
+                alpha = 0.15
+                )
+    
+    x, y, yerr = x[y>0], y[y>0], yerr[y>0]
     ax.errorbar(x, y, yerr=yerr, fmt='ko', capsize=9, elinewidth=2, label='data')
-    ax.set_xlim(xrange);
+
+    if do_ratio:
+        numerator = (x, y, yerr)
+        axes[1].set_xlabel(r'$\sf {0}$'.format(lut_feature.x_label))
+        axes[1].set_ylabel(r'Data/MC')
+        axes[1].set_ylim((0.5, 1.99))
+        axes[1].grid()
+
+        box = axes[1].get_position()
+        axes[1].set_position([box.x0, box.y0, box.width * 0.8, box.height])
+
+        ### calculate ratios 
+        mask = (numerator[1] > 0) & (denominator[1] > 0)
+
+        ratio = numerator[1][mask]/denominator[1][mask]
+        error = ratio*np.sqrt(numerator[2][mask]**2/numerator[1][mask]**2 + denominator[2][mask]**2/denominator[1][mask]**2)
+        axes[1].errorbar(numerator[0][mask], ratio, yerr=error,
+                         fmt = 'ko',
+                         capsize = 0,
+                         elinewidth = 2
+                        )
+        axes[1].plot([lut_feature.xmin, lut_feature.xmax], [1., 1.], 'r--')
+    else: 
+        ax.set_xlabel(r'$\sf {0}$'.format(lut_feature.x_label))
+  
+    ax.set_xlim(lut_feature.xmin, lut_feature.xmax);
     ax.set_ylim(0, ymax=ax.get_ylim()[1]*1.2);
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel('Entries / bin')
+    ax.set_ylabel(r'$\sf {0}$'.format(lut_feature.y_label))
     ax.legend();
     plt.tight_layout();
-    plt.savefig('plots/data-mc/{0}_{1}'.format(title, channel), dpi=500);
+    plt.savefig('plots/data-mc/{0}/{1}'.format(channel, feature), dpi=500);
     plt.close();
-
-f_dict = {'zgLittleTheta': {'bins': 40, 'xrange': [0., 1.], 'xlabel': r'$\sf \cos \theta$', 'title': 'cos_theta'},
-          'zgBigTheta': {'bins': 40, 'xrange': [0., 1.], 'xlabel': '$\sf \cos \Theta$', 'title': 'cos_Theta'},
-          'photonOneR9': {'bins': 40, 'xrange': [0., 1.], 'xlabel': '$\sf R9_{\gamma}$', 'title': 'r9'},
-          'llgPtOverM': {'bins': 40, 'xrange': [0., 1.], 'xlabel': '$\sf p_{T}/m$', 'title':'pt_over_m'},
-          'leptonOneEta': {'bins': 40, 'xrange': [-2.4, 2.4], 'xlabel': '$\sf \eta_{1}$', 'title':'1ep1_eta'},
-          'leptonTwoEta': {'bins': 40, 'xrange': [-2.4, 2.4], 'xlabel': '$\sf \eta_{2}$', 'title':'1ep2_eta'},
-          'photonOneEta': {'bins': 40, 'xrange': [-2.5, 2.5], 'xlabel': '$\sf \eta_{\gamma}$', 'title':'photon_eta'},
-          'zgPhi': {'bins': 40, 'xrange': [-2.4, 2.4], 'xlabel': '$\sf \phi$', 'title':'zg_phi'},
-          'photonOneMVA': {'bins': 40, 'xrange': [0.2, 1.], 'xlabel': 'photon MVA', 'title':'photon_mva'},
-          'phores': {'bins': 40, 'xrange': [0., 0.2], 'xlabel': 'photon resolution', 'title':'photon_res'},
-          'lPhotonDRMin': {'bins': 40, 'xrange': [0.4, 5.], 'xlabel': 'DR min', 'title':'dr_min'},
-          'lPhotonDRMax': {'bins': 40, 'xrange': [0.4, 5.], 'xlabel': 'DR max', 'title':'dr_max'},
-         }
-
-
+ 
 if __name__ == '__main__':
-    f_list = ['zgLittleTheta', 'zgBigTheta', 'llgPtOverM', 'leptonOneEta', 'leptonTwoEta',
-          'photonOneEta', 'zgPhi', 'photonOneR9', 'photonOneMVA', #'phores',
-          'lPhotonDRMin', 'lPhotonDRMax']
-    for feature in f_list:
-        f = f_dict[feature]
-        make_data_mc_plot(feature, f['bins'], f['xrange'], f['xlabel'], f['title'], 'muon')
-        make_data_mc_plot(feature, f['bins'], f['xrange'], f['xlabel'], f['title'], 'electron')
+    
+    channels = ['mumug', 'elelg']
+    mc = ['zjets_m-50_amc', 'zg_llg']#, 'ttbar_inclusive']#, 'hzg_gluglu', 'hzg_tth', 'hzg_vbf', 'hzg_wh', 'hzg_zh']
+
+    data = {'mumug': ['muon_2016B', 'muon_2016C', 'muon_2016D', 'muon_2016E', 'muon_2016F', 'muon_2016G', 'muon_2016H'],
+            'elelg': ['electron_2016B', 'electron_2016C', 'electron_2016D', 'electron_2016E', 
+                      'electron_2016F', 'electron_2016G', 'electron_2016H']}
+    
+    dataset_dict = {'mumug': mc + ['data'], 'elelg': mc + ['data']}
+
+    for channel in channels:
+        datasets = []
+        dataset_list = dataset_dict[channel]
+        for dataset in tqdm(dataset_list):
+            if dataset == 'data':
+                data_df_list = []
+                for entry in data[channel]:
+                    data_df_list.append(read_root('data/step1_phores/output_{0}_2016_flat.root'.format(channel), '{0}'.format(entry)).astype('float'))
+                data_df = pd.concat(data_df_list)
+                datasets.append(data_df)
+            else:
+                datasets.append(read_root('data/step1_phores/output_{0}_2016_flat.root'.format(channel), '{0}'.format(dataset)).astype('float'))
+        
+        lut_datasets = pd.read_excel('data/plotting_lut.xlsx', sheet_name='datasets_2016', index_col='dataset_name').dropna(how='all')
+        lut_features = pd.read_excel('data/plotting_lut.xlsx', sheet_name='variables_{0}'.format(channel),index_col='variable_name').dropna(how='all')
+
+        f_list = ['zgLittleTheta', 'dileptonM', 'llgM', 'llgMKin', 'dileptonMKin']
+
+        for feature in f_list:
+            make_data_mc_plot(dataset_list, datasets, feature, channel, lut_datasets, lut_features.loc[feature])

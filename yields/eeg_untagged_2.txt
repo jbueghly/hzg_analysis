@@ -1,5 +1,0 @@
-bin     cat2       cat2      cat2       cat2       cat2      cat2
-process     ttH_hzg     ZH_hzg      WH_hzg      qqH_hzg     ggH_hzg     bgr
-process     -4      -3      -2      -1      0       1
-rate 0.034588     0.062499     0.089951     0.229537     2.564193     1.000000
--------------------------------------------------------------

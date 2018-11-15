@@ -5,6 +5,12 @@ plots/
 post_training/
 signal_yields/
 signal_yields_new/
+yields/
+rate_snippets/
 tmp_fits/
 tmva_stuff/
 .ipynb_checkpoints/
+
+*.png
+notebooks/check_mc_weights.ipynb
+scripts/check_mc_weights.py

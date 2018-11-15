@@ -8,38 +8,38 @@ import numpy as np
 from tqdm import tqdm, trange
 from root_pandas import read_root
 
-channels = ['mumug', 'elelg']
-#datasets = ['hzg_gluglu', 'hzg_tth', 'hzg_vbf', 'hzg_wh', 'hzg_zh']
-mc = ['zjets_m-50_amc', 'zg_llg', 'hzg_gluglu', 'hzg_tth', 'hzg_vbf', 'hzg_wh', 'hzg_zh']
-muon_data = ['muon_2016B', 'muon_2016C', 'muon_2016D', 'muon_2016E', 
-             'muon_2016F', 'muon_2016G', 'muon_2016H']
-electron_data = ['electron_2016B', 'electron_2016C', 'electron_2016D', 'electron_2016E', 
-                 'electron_2016F', 'electron_2016G', 'electron_2016H']
-data_dict = {'mumug': mc + muon_data, 'elelg': mc + electron_data}
-#categories = ['dijet', 'untagged_1', 'untagged_2', 'untagged_3', 'untagged_4']
-categories = ['dijet_1', 'dijet_2', 'untagged_1', 'untagged_2', 'untagged_3', 'untagged_4']
-#categories = ['dijet_1', 'dijet_2', 'untagged_11', 'untagged_12', 'untagged_21', 'untagged_22', 'untagged_3', 'untagged_4']
-#cat_num = [5, 1, 2, 3, 4]
-cat_num = [51, 52, 1, 2, 3, 4]
-#cat_num = [51, 52, 11, 12, 21, 22, 3, 4]
-
 if __name__ == '__main__':
+
+    category_scheme = 'optimal'
+    #category_scheme = 'nominal'
+
+    channels = ['mumug', 'elelg']
+
+    mc = ['zjets_m-50_amc', 'zg_llg', 'hzg_gluglu', 'hzg_tth', 'hzg_vbf', 'hzg_wh', 'hzg_zh']
+    muon_data = ['muon_2016B', 'muon_2016C', 'muon_2016D', 'muon_2016E', 
+                 'muon_2016F', 'muon_2016G', 'muon_2016H']
+    electron_data = ['electron_2016B', 'electron_2016C', 'electron_2016D', 'electron_2016E', 
+                     'electron_2016F', 'electron_2016G', 'electron_2016H']
+    data_dict = {'mumug': mc + muon_data, 'elelg': mc + electron_data}
+
+    if category_scheme == 'nominal':
+        categories = ['lepton', 'dijet', 'untagged_1', 'untagged_2', 'untagged_3', 'untagged_4']
+        cat_num = [6789, 5, 1, 2, 3, 4]
+    elif category_scheme == 'optimal':
+        categories = ['lepton', 'dijet_1', 'dijet_2', 'untagged_1', 'untagged_2', 'untagged_3', 'untagged_4']
+        #categories = ['dijet_1', 'dijet_2', 'untagged_11', 'untagged_12', 'untagged_21', 
+        #               'untagged_22', 'untagged_3', 'untagged_4']
+        cat_num = [6789, 51, 52, 1, 2, 3, 4]
 
     for channel in channels:
         yield_dict = {}
         for dataset in data_dict[channel]:
             for cat in categories:
-                #if channel == 'elelg' and cat == 'dijet_1':
-                #    if dataset == 'hzg_zh' or dataset == 'hzg_tth':
-                #        yield_dict['{0}_{1}'.format(dataset, cat)] = 0.
-                #        continue
-                #df = read_root('data/step4_cats/output_{0}_2016_yields.root'.format(channel), '{0}_{1}'.format(dataset, cat))
-                df = read_root('data/step4_cats_new/output_{0}_2016_yields.root'.format(channel), '{0}_{1}'.format(dataset, cat)).astype('float')
+                df = read_root('data/step4_cats/output_{0}_2016_yields.root'.format(channel), '{0}_{1}'.format(dataset, cat)).astype('float')
                 df.query('115. < three_body_mass < 170.', inplace=True)
                 yield_dict['{0}_{1}'.format(dataset, cat)] = np.sum(df.eventWeight) 
                 
             df = read_root('data/step3_vbf_bdt/output_{0}_2016_flat.root'.format(channel), '{0}'.format(dataset)).astype('float')
-            #df.query('115. < three_body_mass < 170.', inplace=True)
 
             if dataset in yield_dict:
                 yield_dict['{0}'.format(dataset)] += np.sum(df.eventWeight*df.genWeight)
@@ -63,6 +63,7 @@ if __name__ == '__main__':
                     yield_dict['background'] += np.sum(df.eventWeight*df.genWeight)
                 else:
                     yield_dict['background'] = np.sum(df.eventWeight*df.genWeight)
+
         # make datacard snippets
         for i, cat in enumerate(categories):
             num = cat_num[i]
@@ -82,7 +83,7 @@ if __name__ == '__main__':
             snippet += '1.000000\n'
             snippet += '-------------------------------------------------------------\n'
             #text_file = open('signal_yields/{0}_{1}.txt'.format(channel, cat), 'w')
-            text_file = open('signal_yields_new/{0}_{1}.txt'.format(channel, cat), 'w')
+            text_file = open('yields/rate_snippets/{0}_{1}.txt'.format(channel, cat), 'w')
             text_file.write(snippet)
             text_file.close()
 
@@ -92,10 +93,7 @@ if __name__ == '__main__':
             text_file.write(snippet)
         text_file.write('{0} data: {1}\n'.format(channel, yield_dict['{0}_total'.format(channel)]))
         text_file.write('{0} background: {1}\n'.format(channel, yield_dict['background']))
-        text_file.close()
-
-
-            
+        text_file.close()            
 
    # # make html tables for slides
    # taiwan_yields = pd.read_csv('data/taiwan_yields.csv')
