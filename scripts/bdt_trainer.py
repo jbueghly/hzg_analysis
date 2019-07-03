@@ -6,27 +6,23 @@ import ROOT as r
 from ROOT import TMVA as t
 
 if __name__ == '__main__':
-    inputFilesDir = 'data/step1_phores'
+    inputFilesDir = 'data/step1_sfs'
     outputWeightsDir = 'trained_bdts'
 
     print('setting up TMVA')
 
     # ggf, vbf, tth, zh, w+h, w-h, z+jets, zg_llg, tt2l2nu
-    #mcwei = [0.0006731, 0.0001032, 0.0001448, 0.0001754, 0.0001645, 0.0001068, 2.6089713, 0.4303657, 0.0399476] # update to dict later
-    #mcwei = [0.0006731, 2.6089713] # update to dict later
+    mcwei = [0.0007090, 0.0001082, 0.0001495, 0.0001910, 0.0001763, 0.0001148, 2.6446207, 0.4315552]
 
-    mcwei = [0.0007087, 0.0001087, 0.0001937, 0.0001490, 0.0001510, 2.6467566, 0.4507267]
-
-    # sampleNames ??????
-    # outFileName ??????
     outFileName = 'trained_bdts/mva_output_file.root'
+    outputFile = r.TFile(outFileName, 'RECREATE')
 
     t.Tools.Instance() # what does this do ?????? 
     
     Use =   {
-            'BDT': 0,
+            'BDT': 1,
             'BDTG': 0,
-            'BDTRT': 1,
+            'BDTRT': 0,
             'BDTB': 0,
             'BDTD': 0,
             'BDTF': 0,
@@ -37,56 +33,45 @@ if __name__ == '__main__':
             'TMlpANN': 0
             }
 
-    outputFile = r.TFile(outFileName, 'RECREATE')
-    # classificationBaseName ??????
 
     factory = t.Factory('discr', outputFile, '!V:!Silent:Color:DrawProgressBar:Transformations=I;D;G,D:AnalysisType=Classification')
-    #factory = t.Factory('discr', outputFile, '!V:!Silent:Color:DrawProgressBar:AnalysisType=Classification')
     factory.Print()
     
     t.gConfig().GetIONames().fWeightFileDir = outputWeightsDir
+    dataloader = t.DataLoader(".")
 
-    dataloader = t.DataLoader("dataset")
-
-    dataloader.AddVariable('zgLittleTheta', 'costheta', 'costheta', 'F')
-    dataloader.AddVariable('zgBigTheta', 'cosTheta', 'cosTheta', 'F')
-    dataloader.AddVariable('llgPtOverM', 'mllgptdmllg', 'mllgptdmllg', 'F')
-    dataloader.AddVariable('leptonOneEta', 'lepEta1', 'lepEta1', 'F')
-    dataloader.AddVariable('leptonTwoEta', 'lepEta2', 'lepEta2', 'F')
-    dataloader.AddVariable('photonOneEta', 'phoEta', 'phoEta', 'F')
-    dataloader.AddVariable('zgPhi', 'Phi', 'Phi', 'F')
-    dataloader.AddVariable('photonOneR9', 'phoR9', 'phoR9', 'F')
-    dataloader.AddVariable('photonOneMVA', 'phoMVA', 'phoMVA', 'F')
-    dataloader.AddVariable('phores', 'phores', 'phores', 'F')
-    dataloader.AddVariable('lPhotonDRMin', 'dRlg', 'dRlg', 'F')
-    dataloader.AddVariable('lPhotonDRMax', 'maxdRlg', 'maxdRlg', 'F')
+    dataloader.AddVariable('zgLittleThetaJames', 'zgLittleThetaJames', 'zgLittleThetaJames', 'F')
+    dataloader.AddVariable('zgBigThetaJames', 'zgBigThetaJames', 'zgBigThetaJames', 'F')
+    dataloader.AddVariable('llgPtOverM', 'llgPtOverM', 'llgPtOverM', 'F')
+    dataloader.AddVariable('leptonOneEta', 'leptonOneEta', 'leptonOneEta', 'F')
+    dataloader.AddVariable('leptonTwoEta', 'leptonTwoEta', 'leptonTwoEta', 'F')
+    dataloader.AddVariable('photonOneEta', 'photonOneEta', 'photonOneEta', 'F')
+    dataloader.AddVariable('zgPhiJames', 'zgPhiJames', 'zgPhiJames', 'F')
+    dataloader.AddVariable('photonOneR9', 'photonOneR9', 'photonOneR9', 'F')
+    dataloader.AddVariable('photonOneMVA', 'photonOneMVA', 'photonOneMVA', 'F')
+    dataloader.AddVariable('lPhotonDRMin', 'lPhotonDRMin', 'lPhotonDRMin', 'F')
+    dataloader.AddVariable('lPhotonDRMax', 'lPhotonDRMax', 'lPhotonDRMax', 'F')
 
     # trees for training
-    inputFile = r.TFile('{0}/output_combined_2016_flat.root'.format(inputFilesDir))
+    inputFile = r.TFile('{0}/output_combined_2016.root'.format(inputFilesDir))
     sig_ggf = inputFile.Get('hzg_gluglu') 
     sig_vbf = inputFile.Get('hzg_vbf')
-    sig_zh = inputFile.Get('hzg_zh')
-    sig_wh = inputFile.Get('hzg_wh')
     sig_tth = inputFile.Get('hzg_tth')
-    #bkg_zjets = inputFile.Get('zjets_m-50_amc') 
+    sig_zh = inputFile.Get('hzg_zh')
+    sig_wplush = inputFile.Get('hzg_wplush')
+    sig_wminush = inputFile.Get('hzg_wminush')
     bkg1 = inputFile.Get('zjets_m-50_amc') 
-    #r.gROOT.cd()
-    #bkg1 = bkg_zjets.CopyTree("vetoDY==0")
     bkg2 = inputFile.Get('zg_llg')
-
-    #factory.AddSignalTree(sig_ggF, mcwei[0])
-    #factory.AddBackgroundTree(bkg1, mcwei[1])
+    
     dataloader.AddSignalTree(sig_ggf, mcwei[0])
     dataloader.AddSignalTree(sig_vbf, mcwei[1])
-    dataloader.AddSignalTree(sig_zh, mcwei[2])
-    dataloader.AddSignalTree(sig_wh, mcwei[3])
-    dataloader.AddSignalTree(sig_tth, mcwei[4])
-    dataloader.AddBackgroundTree(bkg1, mcwei[5])
-    #dataloader.AddBackgroundTree(bkg2, mcwei[6])
+    dataloader.AddSignalTree(sig_tth, mcwei[2])
+    dataloader.AddSignalTree(sig_zh, mcwei[3])
+    dataloader.AddSignalTree(sig_wplush, mcwei[4])
+    dataloader.AddSignalTree(sig_wminush, mcwei[5])
+    dataloader.AddBackgroundTree(bkg1, mcwei[6])
+    dataloader.AddBackgroundTree(bkg2, mcwei[7])
 
-    #factory.SetSignalWeightExpression('eventWeight*genWeight')
-    #factory.SetBackgroundWeightExpression('eventWeight*genWeight')
-    #factory.PrepareTrainingAndTestTree(r.TCut(''), r.TCut(''), 'SplitMode=Random:NormMode=NumEvents:!V')
     dataloader.SetSignalWeightExpression('eventWeight*genWeight')
     dataloader.SetBackgroundWeightExpression('eventWeight*genWeight')
     dataloader.PrepareTrainingAndTestTree(r.TCut(''), r.TCut(''), 'SplitMode=Random:NormMode=NumEvents:!V')
@@ -97,10 +82,13 @@ if __name__ == '__main__':
         factory.BookMethod(dataloader, t.Types.kBDT, 'BDTG', '!H:!V:IgnoreNegWeightsInTraining:NTrees=1000:BoostType=Grad:Shrinkage=0.10:UseBaggedGrad:GradBaggingFraction=0.5:nCuts=20:NNodesMax=5')
 
     if Use['BDT']:
-        factory.BookMethod(dataloader, t.Types.kBDT, 'BDT', '!H:!V:IgnoreNegWeightsInTraining:NTrees=1000:nEventsMin=40:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=1:SeparationType=GiniIndex:nCuts=20')
+        #factory.BookMethod(dataloader, t.Types.kBDT, 'BDT', '!H:!V:IgnoreNegWeightsInTraining:NTrees=1000:nEventsMin=40:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=1:SeparationType=GiniIndex:nCuts=20')
+        #factory.BookMethod(dataloader, t.Types.kBDT, 'BDT', '!H:!V:IgnoreNegWeightsInTraining:NTrees=1000:nEventsMin=40:MaxDepth=5:BoostType=AdaBoost:AdaBoostBeta=0.6:SeparationType=GiniIndex:nCuts=20')
+        factory.BookMethod(dataloader, t.Types.kBDT, 'BDT', '!H:!V:IgnoreNegWeightsInTraining:NTrees=1000:MinNodeSize=0.0230303%:MaxDepth=5:BoostType=AdaBoost:AdaBoostBeta=0.6:SeparationType=GiniIndex:nCuts=20')
 
     if Use['BDTRT']:
-        factory.BookMethod(dataloader, t.Types.kBDT, 'BDTRT', '!H:!V:IgnoreNegWeightsInTraining:NTrees=1000:nEventsMin=40:MaxDepth=4:UseRandomisedTrees=True:BoostType=AdaBoost:AdaBoostBeta=1:SeparationType=GiniIndex:nCuts=20:NNodesMax=5')
+        #factory.BookMethod(dataloader, t.Types.kBDT, 'BDTRT', '!H:!V:IgnoreNegWeightsInTraining:NTrees=1000:nEventsMin=40:MaxDepth=4:UseRandomisedTrees=True:BoostType=AdaBoost:AdaBoostBeta=1:SeparationType=GiniIndex:nCuts=20:NNodesMax=5')
+        factory.BookMethod(dataloader, t.Types.kBDT, 'BDTRT', '!H:!V:IgnoreNegWeightsInTraining:NTrees=1000:nEventsMin=40:MaxDepth=5:UseRandomisedTrees=True:BoostType=AdaBoost:AdaBoostBeta=0.6:SeparationType=GiniIndex:nCuts=20:NNodesMax=5')
 
     if Use['BDTB']:
         factory.BookMethod(dataloader, t.Types.kBDT, 'BDTB', '!H:!V:NTrees=400:BoostType=Bagging:SeparationType=GiniIndex:nCuts=20:PruneMethod=NoPruning')
