@@ -26,29 +26,28 @@ if __name__ == '__main__':
     electron_data_16 = ['electron_2016B', 'electron_2016C', 'electron_2016D', 'electron_2016E', 
                      'electron_2016F', 'electron_2016G', 'electron_2016H']
 
-    mc_17 = ['hzg_gluglu_2017', 'hzg_tth_2017', 'hzg_vbf_2017', 'hzg_wplus_2017', 'hzg_wminus_2017', 'hzg_zh_2017'] # not yet available
+    mc_17 = ['hzg_gluglu_2017', 'hzg_tth_2017', 'hzg_vbf_2017', 'hzg_wplush_2017', 'hzg_wminush_2017', 'hzg_zh_2017'] 
     muon_data_17 = ['muon_2017B', 'muon_2017C', 'muon_2017D', 'muon_2017E', 'muon_2017F']
-    electron_data_17 = [] # not yet available
+    electron_data_17 = ['electron_2017B', 'electron_2017C', 'electron_2017D', 'electron_2017E', 'electron_2017F'] 
 
     samples = {
-                2016: {'mumug': mc_16 + muon_data_16, 'elelg': mc_16 + electron_data_16},
-                #2017: {'mumug': mc_17 + muon_data_17, 'elelg': mc_17 + electron_data_17} 
-                2017: {'mumug': mc_17 + muon_data_17, 'elelg': electron_data_17} 
+                2016: {'mmg': mc_16 + muon_data_16, 'eeg': mc_16 + electron_data_16},
+                2017: {'mmg': mc_17 + muon_data_17, 'eeg': mc_17 + electron_data_17} 
                 }
     
     category_scheme = 'optimal'
     #category_scheme = 'nominal'
     
-    channels = ['mumug', 'elelg']
+    channels = ['mmg', 'eeg']
     periods = [2016, 2017]
-    channels_rename = {'mumug': 'mmg', 'elelg': 'eeg'}
+    channels_rename = {'mmg': 'mmg', 'eeg': 'eeg'}
 
     if category_scheme == 'nominal':
         categories = ['lepton', 'dijet', 'boosted', 'untagged_1', 'untagged_2', 'untagged_3', 'untagged_4']
 
     elif category_scheme == 'optimal':
         categories = ['lepton', 'dijet_1', 'dijet_2', 'untagged_1', 'untagged_2', 'untagged_3', 'untagged_4']
-        kin_bdt_cut_dict = {'mumug': [-0.085, -0.0665, -0.02, 0.019], 'elelg': [-0.075, -0.06, -0.016, 0.022]}
+        kin_bdt_cut_dict = {'mmg': [-0.085, -0.0665, -0.02, 0.019], 'eeg': [-0.075, -0.06, -0.016, 0.022]}
  
     # This is how we need to organize the data for limits
     print('categorizing for limits')
@@ -81,10 +80,10 @@ if __name__ == '__main__':
             sig_tag = 'sig'
             if dataset == 'zjets_m-50_amc' or dataset == 'zg_llg':
                 sig_tag = 'bkg'
-            if channel == 'mumug':
+            if channel == 'mmg':
                 if dataset[:4] == 'muon':
                     sig_tag = 'data'
-            elif channel == 'elelg':
+            elif channel == 'eeg':
                 if dataset[:4] == 'elec':
                     sig_tag = 'data'
 
@@ -109,7 +108,7 @@ if __name__ == '__main__':
                     elif evt.llgPt >= 60.0:
                         fill_cat_tree(outTree_dict, sig_tag, 'boosted', evt, useKinFit=False)
                     else:
-                        if channel == 'mumug':
+                        if channel == 'mmg':
                             if abs(evt.photonOneEta) < 1.4442:
                                 if ((abs(evt.leptonOneEta) < 2.1 and abs(evt.leptonTwoEta) < 2.1) and
                                    (abs(evt.leptonOneEta) < 0.9 or  abs(evt.leptonTwoEta) < 0.9)):
@@ -125,7 +124,7 @@ if __name__ == '__main__':
                             else:
                                 fill_cat_tree(outTree_dict, sig_tag, 'untagged_4', 
                                               evt, useKinFit=False)
-                        elif channel == 'elelg':
+                        elif channel == 'eeg':
                             if abs(evt.photonOneEta) < 1.4442:
                                 if (abs(evt.leptonOneEta) < 1.4442 and 
                                     abs(evt.leptonTwoEta) < 1.4442):
@@ -213,7 +212,7 @@ if __name__ == '__main__':
                     elif evt.llgPt >= 60.0:
                         fill_cat_tree(outTree_dict, dataset, 'boosted', evt, useKinFit=False)
                     else:
-                        if channel == 'mumug':
+                        if channel == 'mmg':
                             if abs(evt.photonOneEta) < 1.4442:
                                 if ((abs(evt.leptonOneEta) < 2.1 and abs(evt.leptonTwoEta) < 2.1) and
                                     (abs(evt.leptonOneEta) < 0.9 or  abs(evt.leptonTwoEta) < 0.9)):
@@ -229,7 +228,7 @@ if __name__ == '__main__':
                             else:
                                 fill_cat_tree(outTree_dict, dataset, 'untagged_4', 
                                               evt, useKinFit=False)
-                        elif channel == 'elelg':
+                        elif channel == 'eeg':
                             if abs(evt.photonOneEta) < 1.4442:
                                 if (abs(evt.leptonOneEta) < 1.4442 and 
                                     abs(evt.leptonTwoEta) < 1.4442):

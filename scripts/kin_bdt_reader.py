@@ -19,14 +19,13 @@ if __name__ == '__main__':
     electron_data_16 = ['electron_2016B', 'electron_2016C', 'electron_2016D', 'electron_2016E', 
                      'electron_2016F', 'electron_2016G', 'electron_2016H']
 
-    mc_17 = ['hzg_gluglu_2017', 'hzg_tth_2017', 'hzg_vbf_2017', 'hzg_wplus_2017', 'hzg_wminus_2017', 'hzg_zh_2017'] # not yet available
+    mc_17 = ['hzg_gluglu_2017', 'hzg_tth_2017', 'hzg_vbf_2017', 'hzg_wplush_2017', 'hzg_wminush_2017', 'hzg_zh_2017'] 
     muon_data_17 = ['muon_2017B', 'muon_2017C', 'muon_2017D', 'muon_2017E', 'muon_2017F']
-    electron_data_17 = [] # not yet available
+    electron_data_17 = ['electron_2017B', 'electron_2017C', 'electron_2017D', 'electron_2017E', 'electron_2017F'] 
 
     samples = {
-                2016: {'mumug': mc_16 + muon_data_16, 'elelg': mc_16 + electron_data_16},
-                #2017: {'mumug': mc_17 + muon_data_17, 'elelg': mc_17 + electron_data_17} 
-                2017: {'mumug': mc_17 + muon_data_17, 'elelg': electron_data_17} 
+                2016: {'mmg': mc_16 + muon_data_16, 'eeg': mc_16 + electron_data_16},
+                2017: {'mmg': mc_17 + muon_data_17, 'eeg': mc_17 + electron_data_17} 
                 }
 
     kinWeightsFile = 'trained_bdts/discr_BDT.weights.xml'
@@ -60,7 +59,7 @@ if __name__ == '__main__':
  
     kin_reader.BookMVA('BDT method', kinWeightsFile)
     
-    channels = ['mumug', 'elelg']
+    channels = ['mmg', 'eeg']
     periods = [2016, 2017]
     
     for period, channel in itertools.product(periods, channels):

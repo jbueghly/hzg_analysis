@@ -12,7 +12,7 @@ import itertools
 
 if __name__ == '__main__':
 
-    channels = ['mumug', 'elelg']
+    channels = ['mmg', 'eeg']
 
     mc_16 = ['ttbar_inclusive', 'zjets_m-50_amc', 'zg_llg', 'hzg_gluglu', 'hzg_tth', 'hzg_vbf', 'hzg_wplush', 'hzg_wminush', 'hzg_zh']
     muon_data_16 = ['muon_2016B', 'muon_2016C', 'muon_2016D', 'muon_2016E', 
@@ -20,14 +20,13 @@ if __name__ == '__main__':
     electron_data_16 = ['electron_2016B', 'electron_2016C', 'electron_2016D', 'electron_2016E', 
                      'electron_2016F', 'electron_2016G', 'electron_2016H']
 
-    mc_17 = ['hzg_gluglu_2017', 'hzg_tth_2017', 'hzg_vbf_2017', 'hzg_wplus_2017', 'hzg_wminus_2017', 'hzg_zh_2017'] # not yet available
+    mc_17 = ['hzg_gluglu_2017', 'hzg_tth_2017', 'hzg_vbf_2017', 'hzg_wplush_2017', 'hzg_wminush_2017', 'hzg_zh_2017'] 
     muon_data_17 = ['muon_2017B', 'muon_2017C', 'muon_2017D', 'muon_2017E', 'muon_2017F']
-    electron_data_17 = [] # not yet available
+    electron_data_17 = ['electron_2017B', 'electron_2017C', 'electron_2017D', 'electron_2017E', 'electron_2017F'] 
 
     samples = {
-                2016: {'mumug': mc_16 + muon_data_16, 'elelg': mc_16 + electron_data_16},
-                #2017: {'mumug': mc_17 + muon_data_17, 'elelg': mc_17 + electron_data_17} 
-                2017: {'mumug': mc_17 + muon_data_17, 'elelg': electron_data_17} 
+                2016: {'mmg': mc_16 + muon_data_16, 'eeg': mc_16 + electron_data_16},
+                2017: {'mmg': mc_17 + muon_data_17, 'eeg': mc_17 + electron_data_17} 
                 }
  
     br_zg_m125 = 1.533e-3
@@ -40,6 +39,7 @@ if __name__ == '__main__':
             'hzg_wh': 1.358/pho_conv, 'hzg_wplush': 0.831/pho_conv, 'hzg_wminush': 0.527/pho_conv,'hzg_zh': 0.88/pho_conv,
             'hzg_gluglu_2017': 48.61/pho_conv, 'hzg_tth_2017': 0.5071/pho_conv, 'hzg_vbf_2017': 3.766/pho_conv, 
             'hzg_wh_2017': 1.358/pho_conv, 'hzg_wplus_2017': 0.831/pho_conv, 'hzg_wminus_2017': 0.527/pho_conv,'hzg_zh_2017': 0.88/pho_conv,
+            'hzg_wplush_2017': 0.831/pho_conv, 'hzg_wminush_2017': 0.527/pho_conv,
             'muon_2016B': 1., 'muon_2016C': 1., 'muon_2016D': 1., 'muon_2016E': 1., 
             'muon_2016F': 1., 'muon_2016G': 1., 'muon_2016H': 1.,
             'muon_2017B': 1., 'muon_2017C': 1., 'muon_2017D': 1., 'muon_2017E': 1., 'muon_2017F': 1.,
@@ -50,8 +50,9 @@ if __name__ == '__main__':
     br =   {'zjets_m-50_amc': 1., 'zg_llg': 1., 'ttbar_inclusive': 1., # these from MY
             'hzg_gluglu': br_zg_m125*br_zll, 'hzg_tth': br_zg_m125, 'hzg_vbf': br_zg_m125*br_zll, 
             'hzg_wh': br_zg_m125, 'hzg_wplush': br_zg_m125, 'hzg_wminush': br_zg_m125,'hzg_zh': br_zg_m125,
-            'hzg_gluglu_2017': br_zg_m125*br_zll, 'hzg_tth_2017': br_zg_m125, 'hzg_vbf_2017': br_zg_m125*br_zll, 
+            'hzg_gluglu_2017': br_zg_m125*br_zll, 'hzg_tth_2017': br_zg_m125*br_zll, 'hzg_vbf_2017': br_zg_m125*br_zll, 
             'hzg_wh_2017': br_zg_m125, 'hzg_wplus_2017': br_zg_m125, 'hzg_wminus_2017': br_zg_m125,'hzg_zh_2017': br_zg_m125,
+            'hzg_wplush_2017': br_zg_m125, 'hzg_wminush_2017': br_zg_m125,
             'muon_2016B': 1., 'muon_2016C': 1., 'muon_2016D': 1., 'muon_2016E': 1., 
             'muon_2016F': 1., 'muon_2016G': 1., 'muon_2016H': 1.,
             'muon_2017B': 1., 'muon_2017C': 1., 'muon_2017D': 1., 'muon_2017E': 1., 'muon_2017F': 1., 
@@ -72,6 +73,7 @@ if __name__ == '__main__':
 
         for dataset in tqdm(datasets):
             tree = inputFile['tree_{0}'.format(dataset)]
+            hist = inputFile['TotalEvents_{0}'.format(dataset)]
             tree.create_buffer()
             outTree = Tree(dataset)
             outTree.set_buffer(tree._buffer, create_branches=True)
@@ -93,5 +95,6 @@ if __name__ == '__main__':
 
                 outTree.Fill()
             outTree.Write()
+            hist.Write()
         outputFile.Close()
         inputFile.Close()
