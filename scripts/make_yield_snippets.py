@@ -11,7 +11,8 @@ import itertools
 
 if __name__ == '__main__':
     
-    mc_16 = ['ttbar_inclusive', 'zjets_m-50_amc', 'zg_llg', 'hzg_gluglu', 'hzg_tth', 'hzg_vbf', 'hzg_wplush', 'hzg_wminush', 'hzg_zh']
+    #mc_16 = ['ttbar_inclusive', 'zjets_m-50_amc', 'zg_llg', 'hzg_gluglu', 'hzg_tth', 'hzg_vbf', 'hzg_wplush', 'hzg_wminush', 'hzg_zh']
+    mc_16 = ['zjets_m-50_amc_16', 'zg_llg_16', 'hzg_gluglu_M125_16', 'hzg_tth_M125_16', 'hzg_vbf_M125_16', 'hzg_wplush_M125_16', 'hzg_wminush_M125_16', 'hzg_zh_M125_16']
     muon_data_16 = ['muon_2016B', 'muon_2016C', 'muon_2016D', 'muon_2016E', 
                  'muon_2016F', 'muon_2016G', 'muon_2016H']
     electron_data_16 = ['electron_2016B', 'electron_2016C', 'electron_2016D', 'electron_2016E', 
@@ -48,8 +49,9 @@ if __name__ == '__main__':
         for dataset in tqdm(datasets):
             for cat in categories:
                 df = read_root('data/step4_cats/output_{0}_{1}_yields.root'.format(channel, period), '{0}_{1}'.format(dataset, cat)).astype('float')
-                df.query('115. < three_body_mass < 170.', inplace=True)
-                yield_dict['{0}_{1}'.format(dataset, cat)] = np.sum(df.eventWeight*df.genWeight*df.mc_sf) 
+                df.query('115. < CMS_hzg_mass < 170.', inplace=True)
+                #yield_dict['{0}_{1}'.format(dataset, cat)] = np.sum(df.eventWeight*df.genWeight*df.mc_sf) 
+                yield_dict['{0}_{1}'.format(dataset, cat)] = np.sum(df.eventWeight) 
                
         # make datacard snippets
         for i, cat in enumerate(categories):
@@ -59,12 +61,12 @@ if __name__ == '__main__':
             snippet += 'process     -5      -4      -3      -2      -1      0       1\n'
             snippet += 'rate '
             if period == 2016:
-                snippet += '{0:.6f}     '.format(yield_dict['hzg_tth_{0}'.format(cat)])
-                snippet += '{0:.6f}     '.format(yield_dict['hzg_zh_{0}'.format(cat)])
-                snippet += '{0:.6f}     '.format(yield_dict['hzg_wplush_{0}'.format(cat)])
-                snippet += '{0:.6f}     '.format(yield_dict['hzg_wminush_{0}'.format(cat)])
-                snippet += '{0:.6f}     '.format(yield_dict['hzg_vbf_{0}'.format(cat)])
-                snippet += '{0:.6f}     '.format(yield_dict['hzg_gluglu_{0}'.format(cat)])
+                snippet += '{0:.6f}     '.format(yield_dict['hzg_tth_M125_16_{0}'.format(cat)])
+                snippet += '{0:.6f}     '.format(yield_dict['hzg_zh_M125_16_{0}'.format(cat)])
+                snippet += '{0:.6f}     '.format(yield_dict['hzg_wplush_M125_16_{0}'.format(cat)])
+                snippet += '{0:.6f}     '.format(yield_dict['hzg_wminush_M125_16_{0}'.format(cat)])
+                snippet += '{0:.6f}     '.format(yield_dict['hzg_vbf_M125_16_{0}'.format(cat)])
+                snippet += '{0:.6f}     '.format(yield_dict['hzg_gluglu_M125_16_{0}'.format(cat)])
             elif period == 2017:
                 snippet += '{0:.6f}     '.format(yield_dict['hzg_tth_2017_{0}'.format(cat)])
                 snippet += '{0:.6f}     '.format(yield_dict['hzg_zh_2017_{0}'.format(cat)])

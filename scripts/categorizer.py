@@ -12,28 +12,35 @@ r.gStyle.SetOptStat(0)
 
 def fill_cat_tree(tree_dict, tag, cat, event, useKinFit=False):
     if useKinFit:
-        tree_dict['{0}_{1}'.format(tag, cat)].three_body_mass = event.llgMKin
+        tree_dict['{0}_{1}'.format(tag, cat)].CMS_hzg_mass = event.llgMKin
     else:
-        tree_dict['{0}_{1}'.format(tag, cat)].three_body_mass = event.llgM
-    tree_dict['{0}_{1}'.format(tag, cat)].eventWeight = event.eventWeight
+        tree_dict['{0}_{1}'.format(tag, cat)].CMS_hzg_mass = event.llgM
+    tree_dict['{0}_{1}'.format(tag, cat)].eventWeight = event.eventWeight*event.genWeight*event.mc_sf
+    tree_dict['{0}_{1}'.format(tag, cat)].vbf_bdt = event.vbf_bdt
+    tree_dict['{0}_{1}'.format(tag, cat)].kin_bdt = event.kin_bdt
     tree_dict['{0}_{1}'.format(tag, cat)].Fill()
 
 if __name__ == '__main__':
 
-    mc_16 = ['ttbar_inclusive', 'zjets_m-50_amc', 'zg_llg', 'hzg_gluglu', 'hzg_tth', 'hzg_vbf', 'hzg_wplush', 'hzg_wminush', 'hzg_zh']
+    signal_16 = ['hzg_gluglu_M125_16', 'hzg_tth_M125_16', 'hzg_vbf_M125_16', 'hzg_wplush_M125_16', 'hzg_wminush_M125_16', 'hzg_zh_M125_16']
+    background_16 = ['zjets_m-50_amc_16', 'zg_llg_16']
     muon_data_16 = ['muon_2016B', 'muon_2016C', 'muon_2016D', 'muon_2016E', 
                  'muon_2016F', 'muon_2016G', 'muon_2016H']
     electron_data_16 = ['electron_2016B', 'electron_2016C', 'electron_2016D', 'electron_2016E', 
                      'electron_2016F', 'electron_2016G', 'electron_2016H']
 
-    mc_17 = ['hzg_gluglu_2017', 'hzg_tth_2017', 'hzg_vbf_2017', 'hzg_wplush_2017', 'hzg_wminush_2017', 'hzg_zh_2017'] 
+    signal_17 = ['hzg_gluglu_2017', 'hzg_tth_2017', 'hzg_vbf_2017', 'hzg_wplush_2017', 'hzg_wminush_2017', 'hzg_zh_2017']
+    background_17 = ['zjets_m-50_2017'] 
     muon_data_17 = ['muon_2017B', 'muon_2017C', 'muon_2017D', 'muon_2017E', 'muon_2017F']
     electron_data_17 = ['electron_2017B', 'electron_2017C', 'electron_2017D', 'electron_2017E', 'electron_2017F'] 
 
     samples = {
-                2016: {'mmg': mc_16 + muon_data_16, 'eeg': mc_16 + electron_data_16},
-                2017: {'mmg': mc_17 + muon_data_17, 'eeg': mc_17 + electron_data_17} 
+                2016: {'mmg': signal_16 + background_16 + muon_data_16, 'eeg': signal_16 + background_16 + electron_data_16},
+                2017: {'mmg': signal_17 + background_17 + muon_data_17, 'eeg': signal_17 + background_17 + electron_data_17} 
                 }
+
+    signal_samples = {2016: signal_16, 2017: signal_17}
+    background_samples = {2016: background_16, 2017: background_17}
     
     category_scheme = 'optimal'
     #category_scheme = 'nominal'
@@ -68,24 +75,28 @@ if __name__ == '__main__':
             outTree_dict['sig_{0}'.format(cat)] = Tree('sig_{0}'.format(cat))
             outTree_dict['data_{0}'.format(cat)] = Tree('data_{0}'.format(cat))
             outTree_dict['bkg_{0}'.format(cat)] = Tree('bkg_{0}'.format(cat))
-            outTree_dict['sig_{0}'.format(cat)].create_branches({'three_body_mass': 'F'})
-            outTree_dict['data_{0}'.format(cat)].create_branches({'three_body_mass': 'F'})
-            outTree_dict['bkg_{0}'.format(cat)].create_branches({'three_body_mass': 'F'})
+            outTree_dict['sig_{0}'.format(cat)].create_branches({'CMS_hzg_mass': 'F'})
+            outTree_dict['data_{0}'.format(cat)].create_branches({'CMS_hzg_mass': 'F'})
+            outTree_dict['bkg_{0}'.format(cat)].create_branches({'CMS_hzg_mass': 'F'})
             outTree_dict['sig_{0}'.format(cat)].create_branches({'eventWeight': 'F'})
             outTree_dict['data_{0}'.format(cat)].create_branches({'eventWeight': 'F'})
             outTree_dict['bkg_{0}'.format(cat)].create_branches({'eventWeight': 'F'})
+            outTree_dict['sig_{0}'.format(cat)].create_branches({'vbf_bdt': 'F'})
+            outTree_dict['data_{0}'.format(cat)].create_branches({'vbf_bdt': 'F'})
+            outTree_dict['bkg_{0}'.format(cat)].create_branches({'vbf_bdt': 'F'})
+            outTree_dict['sig_{0}'.format(cat)].create_branches({'kin_bdt': 'F'})
+            outTree_dict['data_{0}'.format(cat)].create_branches({'kin_bdt': 'F'})
+            outTree_dict['bkg_{0}'.format(cat)].create_branches({'kin_bdt': 'F'})
 
         for dataset in tqdm(datasets):
             tree = inputFile[dataset]
-            sig_tag = 'sig'
-            if dataset == 'zjets_m-50_amc' or dataset == 'zg_llg':
+            sig_tag = ''
+            if dataset in signal_samples[period]:
+                sig_tag = 'sig'
+            elif dataset in background_samples[period]:
                 sig_tag = 'bkg'
-            if channel == 'mmg':
-                if dataset[:4] == 'muon':
-                    sig_tag = 'data'
-            elif channel == 'eeg':
-                if dataset[:4] == 'elec':
-                    sig_tag = 'data'
+            else:
+                sig_tag = 'data'
 
             for evt in tree:
                 if dataset == 'zjets_m-50_amc' and evt.vetoDY:
@@ -97,8 +108,6 @@ if __name__ == '__main__':
                 if category_scheme == 'optimal' and (evt.llgMKin < 115. or evt.llgMKin > 170.):
                     continue
                 if category_scheme == 'nominal' and (evt.llgM < 115. or evt.llgM > 170.):
-                    continue
-                if evt.photonOnePt < 15. or evt.photonOnePt > 100.:
                     continue
                 if category_scheme == 'nominal': 
                     if evt.isLeptonTag:
@@ -185,7 +194,7 @@ if __name__ == '__main__':
             for cat in categories:
                 outTree_dict['{0}_{1}'.format(dataset, cat)] = Tree('{0}_{1}'.format(dataset, cat))
                 outTree_dict['{0}_{1}'.format(dataset, cat)].set_buffer(tree._buffer, create_branches=True)
-                outTree_dict['{0}_{1}'.format(dataset, cat)].create_branches({'three_body_mass': 'F'})
+                outTree_dict['{0}_{1}'.format(dataset, cat)].create_branches({'CMS_hzg_mass': 'F'})
 
             for evt in tree:
                 if dataset == 'zjets_m-50_amc' and evt.vetoDY:
@@ -199,8 +208,6 @@ if __name__ == '__main__':
                 if category_scheme == 'optimal' and (evt.llgMKin < 115. or evt.llgMKin > 170.):
                     continue
                 if category_scheme == 'nominal' and (evt.llgM < 115. or evt.llgM > 170.):
-                    continue
-                if evt.photonOnePt < 15. or evt.photonOnePt > 100.:
                     continue
                 
                 if evt.isLeptonTag:
