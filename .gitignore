@@ -10,7 +10,10 @@ rate_snippets/
 tmp_fits/
 tmva_stuff/
 .ipynb_checkpoints/
+unblinding_checks/
+electron_effic/
+old_notebooks
+trained_bdts/*.root
+trained_bdts/golden_1/
 
 *.png
-notebooks/check_mc_weights.ipynb
-scripts/check_mc_weights.py
