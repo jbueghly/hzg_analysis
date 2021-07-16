@@ -91,27 +91,26 @@ if __name__ == '__main__':
     dataloader.AddSignalTree(sig_vbf_16)
     dataloader.AddBackgroundTree(bkg_zjets_16)
     dataloader.AddBackgroundTree(bkg_zg_16)
-    #dataloader.AddBackgroundTree(bkg_zg_ewk_16)
-    #dataloader.AddBackgroundTree(bkg_ttjets_16)
+    dataloader.AddBackgroundTree(bkg_zg_ewk_16)
+    dataloader.AddBackgroundTree(bkg_ttjets_16)
     dataloader.AddBackgroundTree(bkg_ggH_16)
     
     dataloader.AddSignalTree(sig_vbf_17)
     dataloader.AddBackgroundTree(bkg_zjets_17)
     dataloader.AddBackgroundTree(bkg_zg_17)
-    #dataloader.AddBackgroundTree(bkg_zg_ewk_17)
-    #dataloader.AddBackgroundTree(bkg_ttjets_17)
+    dataloader.AddBackgroundTree(bkg_zg_ewk_17)
+    dataloader.AddBackgroundTree(bkg_ttjets_17)
     dataloader.AddBackgroundTree(bkg_ggH_17)
     
     dataloader.AddSignalTree(sig_vbf_18)
     dataloader.AddBackgroundTree(bkg_zjets_18)
     dataloader.AddBackgroundTree(bkg_zg_18)
-    #dataloader.AddBackgroundTree(bkg_zg_ewk_18)
-    #dataloader.AddBackgroundTree(bkg_ttjets_18)
+    dataloader.AddBackgroundTree(bkg_zg_ewk_18)
+    dataloader.AddBackgroundTree(bkg_ttjets_18)
     dataloader.AddBackgroundTree(bkg_ggH_18)
 
 
     dataloader.SetSignalWeightExpression('eventWeight*genWeight*mc_sf*pt_weight*isDijetTag*jetOneMatched*jetTwoMatched*useTMVA')
-    #dataloader.SetBackgroundWeightExpression('eventWeight*genWeight*mc_sf*pt_weight*isDijetTag')
     dataloader.SetBackgroundWeightExpression('eventWeight*genWeight*mc_sf*pt_weight*isDijetTag*useTMVA')
     dataloader.PrepareTrainingAndTestTree(r.TCut(''), r.TCut(''), 'SplitMode=Random:NormMode=NumEvents:!V')
 

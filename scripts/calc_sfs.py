@@ -15,12 +15,13 @@ import os
 
 if __name__ == '__main__':
 
-    channels = ['mmg', 'eeg']
-
     mc_16 = ['zjets_M50_2016', 'zg_llg_2016', 'zg_ewk_2016', 'ttjets_2016',
              'hzg_gluglu_M120_2016', 'hzg_tth_M120_2016', 'hzg_vbf_M120_2016', 'hzg_wplush_M120_2016', 'hzg_wminush_M120_2016', 'hzg_zh_M120_2016',
              'hzg_gluglu_M125_2016', 'hzg_tth_M125_2016', 'hzg_vbf_M125_2016', 'hzg_wplush_M125_2016', 'hzg_wminush_M125_2016', 'hzg_zh_M125_2016',
-             'hzg_gluglu_M130_2016', 'hzg_tth_M130_2016', 'hzg_vbf_M130_2016', 'hzg_wplush_M130_2016', 'hzg_wminush_M130_2016', 'hzg_zh_M130_2016'
+             'hzg_gluglu_M130_2016', 'hzg_tth_M130_2016', 'hzg_vbf_M130_2016', 'hzg_wplush_M130_2016', 'hzg_wminush_M130_2016', 'hzg_zh_M130_2016',
+             'hmumu_gluglu_M120_2016', 'hmumu_tth_M120_2016', 'hmumu_vbf_M120_2016', 'hmumu_wplush_M120_2016', 'hmumu_wminush_M120_2016', 'hmumu_zh_M120_2016',
+             'hmumu_gluglu_M125_2016', 'hmumu_tth_M125_2016', 'hmumu_vbf_M125_2016', 'hmumu_wplush_M125_2016', 'hmumu_wminush_M125_2016', 'hmumu_zh_M125_2016',
+             'hmumu_gluglu_M130_2016', 'hmumu_tth_M130_2016', 'hmumu_vbf_M130_2016', 'hmumu_wplush_M130_2016', 'hmumu_wminush_M130_2016', 'hmumu_zh_M130_2016'
              ]
     muon_data_16 = ['muon_2016B', 'muon_2016C', 'muon_2016D', 'muon_2016E', 
                     'muon_2016F', 'muon_2016G', 'muon_2016H']
@@ -30,7 +31,10 @@ if __name__ == '__main__':
     mc_17 = ['zjets_M50_2017', 'zg_llg_2017', 'zg_ewk_2017', 'ttjets_2017', 
              'hzg_gluglu_M120_2017', 'hzg_tth_M120_2017', 'hzg_vbf_M120_2017', 'hzg_wplush_M120_2017', 'hzg_wminush_M120_2017', 'hzg_zh_M120_2017',
              'hzg_gluglu_M125_2017', 'hzg_tth_M125_2017', 'hzg_vbf_M125_2017', 'hzg_wplush_M125_2017', 'hzg_wminush_M125_2017', 'hzg_zh_M125_2017',
-             'hzg_gluglu_M130_2017', 'hzg_tth_M130_2017', 'hzg_vbf_M130_2017', 'hzg_wplush_M130_2017', 'hzg_wminush_M130_2017', 'hzg_zh_M130_2017'
+             'hzg_gluglu_M130_2017', 'hzg_tth_M130_2017', 'hzg_vbf_M130_2017', 'hzg_wplush_M130_2017', 'hzg_wminush_M130_2017', 'hzg_zh_M130_2017',
+             'hmumu_gluglu_M120_2017', 'hmumu_tth_M120_2017', 'hmumu_vbf_M120_2017', 'hmumu_wplush_M120_2017', 'hmumu_wminush_M120_2017', 'hmumu_zh_M120_2017',
+             'hmumu_gluglu_M125_2017', 'hmumu_tth_M125_2017', 'hmumu_vbf_M125_2017', 'hmumu_wplush_M125_2017', 'hmumu_wminush_M125_2017', 'hmumu_zh_M125_2017',
+             'hmumu_gluglu_M130_2017', 'hmumu_tth_M130_2017', 'hmumu_vbf_M130_2017', 'hmumu_wplush_M130_2017', 'hmumu_wminush_M130_2017', 'hmumu_zh_M130_2017'
             ] 
     muon_data_17 = ['muon_2017B', 'muon_2017C', 'muon_2017D', 'muon_2017E', 'muon_2017F']
     electron_data_17 = ['electron_2017B', 'electron_2017C', 'electron_2017D', 'electron_2017E', 'electron_2017F'] 
@@ -38,7 +42,10 @@ if __name__ == '__main__':
     mc_18 = ['zjets_M50_2018', 'zg_llg_2018', 'zg_ewk_2018', 'ttjets_2018',
              'hzg_gluglu_M120_2018', 'hzg_tth_M120_2018', 'hzg_vbf_M120_2018', 'hzg_wplush_M120_2018', 'hzg_wminush_M120_2018', 'hzg_zh_M120_2018',
              'hzg_gluglu_M125_2018', 'hzg_tth_M125_2018', 'hzg_vbf_M125_2018', 'hzg_wplush_M125_2018', 'hzg_wminush_M125_2018', 'hzg_zh_M125_2018',
-             'hzg_gluglu_M130_2018', 'hzg_tth_M130_2018', 'hzg_vbf_M130_2018', 'hzg_wplush_M130_2018', 'hzg_wminush_M130_2018', 'hzg_zh_M130_2018'
+             'hzg_gluglu_M130_2018', 'hzg_tth_M130_2018', 'hzg_vbf_M130_2018', 'hzg_wplush_M130_2018', 'hzg_wminush_M130_2018', 'hzg_zh_M130_2018',
+             'hmumu_gluglu_M120_2018', 'hmumu_tth_M120_2018', 'hmumu_vbf_M120_2018', 'hmumu_wplush_M120_2018', 'hmumu_wminush_M120_2018', 'hmumu_zh_M120_2018',
+             'hmumu_gluglu_M125_2018', 'hmumu_tth_M125_2018', 'hmumu_vbf_M125_2018', 'hmumu_wplush_M125_2018', 'hmumu_wminush_M125_2018', 'hmumu_zh_M125_2018',
+             'hmumu_gluglu_M130_2018', 'hmumu_tth_M130_2018', 'hmumu_vbf_M130_2018', 'hmumu_wplush_M130_2018', 'hmumu_wminush_M130_2018', 'hmumu_zh_M130_2018'
             ] 
     muon_data_18 = ['muon_2018A', 'muon_2018B', 'muon_2018C', 'muon_2018D']
     electron_data_18 = ['electron_2018A', 'electron_2018B', 'electron_2018C', 'electron_2018D'] 
@@ -49,9 +56,12 @@ if __name__ == '__main__':
                 2018: {'mmg': mc_18 + muon_data_18, 'eeg': mc_18 + electron_data_18} 
                 }
  
-    br_zg_m120 = 1.100e-3
-    br_zg_m125 = 1.533e-3
-    br_zg_m130 = 1.941e-3
+    br_hzg_m120 = 1.100e-3
+    br_hzg_m125 = 1.533e-3
+    br_hzg_m130 = 1.941e-3
+    br_hmumu_m120 = 2.423e-4
+    br_hmumu_m125 = 2.176e-4
+    br_hmumu_m130 = 1.877e-4
     br_zll = 0.033658*3
     br_htautau = 0.06272
     pho_conv_16 = 0.969
@@ -85,6 +95,27 @@ if __name__ == '__main__':
             'hzg_wplush_M130_2017': 0.7414/pho_conv_17, 'hzg_wminush_M130_2017': 0.4676/pho_conv_17, 'hzg_zh_M130_2017': 0.7899/pho_conv_17,
             'hzg_gluglu_M130_2018': 45.31/pho_conv_18, 'hzg_tth_M130_2018': 0.4539/pho_conv_18, 'hzg_vbf_M130_2018': 3.637/pho_conv_18, 
             'hzg_wplush_M130_2018': 0.7414/pho_conv_18, 'hzg_wminush_M130_2018': 0.4676/pho_conv_18, 'hzg_zh_M130_2018': 0.7899/pho_conv_18,
+            
+            'hmumu_gluglu_M120_2016': 52.22, 'hmumu_tth_M120_2016': 0.5697, 'hmumu_vbf_M120_2016': 3.935, 
+            'hmumu_wplush_M120_2016': 0.9558, 'hmumu_wminush_M120_2016': 0.6092, 'hmumu_zh_M120_2016': 0.9939, 
+            'hmumu_gluglu_M120_2017': 52.22, 'hmumu_tth_M120_2017': 0.5697, 'hmumu_vbf_M120_2017': 3.935, 
+            'hmumu_wplush_M120_2017': 0.9558, 'hmumu_wminush_M120_2017': 0.6092, 'hmumu_zh_M120_2017': 0.9939,
+            'hmumu_gluglu_M120_2018': 52.22, 'hmumu_tth_M120_2018': 0.5697, 'hmumu_vbf_M120_2018': 3.935, 
+            'hmumu_wplush_M120_2018': 0.9558, 'hmumu_wminush_M120_2018': 0.6092, 'hmumu_zh_M120_2018': 0.9939, 
+
+            'hmumu_gluglu_M125_2016': 48.58, 'hmumu_tth_M125_2016': 0.5071, 'hmumu_vbf_M125_2016': 3.782, 
+            'hmumu_wplush_M125_2016': 0.84, 'hmumu_wminush_M125_2016': 0.532, 'hmumu_zh_M125_2016': 0.8839,
+            'hmumu_gluglu_M125_2017': 48.58, 'hmumu_tth_M125_2017': 0.5071, 'hmumu_vbf_M125_2017': 3.782, 
+            'hmumu_wplush_M125_2017': 0.84, 'hmumu_wminush_M125_2017': 0.532, 'hmumu_zh_M125_2017': 0.8839,
+            'hmumu_gluglu_M125_2018': 48.58, 'hmumu_tth_M125_2018': 0.5071, 'hmumu_vbf_M125_2018': 3.782, 
+            'hmumu_wplush_M125_2018': 0.84, 'hmumu_wminush_M125_2018': 0.532, 'hmumu_zh_M125_2018': 0.8839,
+            
+            'hmumu_gluglu_M130_2016': 45.31, 'hmumu_tth_M130_2016': 0.4539, 'hmumu_vbf_M130_2016': 3.637, 
+            'hmumu_wplush_M130_2016': 0.7414, 'hmumu_wminush_M130_2016': 0.4676, 'hmumu_zh_M130_2016': 0.7899, 
+            'hmumu_gluglu_M130_2017': 45.31, 'hmumu_tth_M130_2017': 0.4539, 'hmumu_vbf_M130_2017': 3.637, 
+            'hmumu_wplush_M130_2017': 0.7414, 'hmumu_wminush_M130_2017': 0.4676, 'hmumu_zh_M130_2017': 0.7899,
+            'hmumu_gluglu_M130_2018': 45.31, 'hmumu_tth_M130_2018': 0.4539, 'hmumu_vbf_M130_2018': 3.637, 
+            'hmumu_wplush_M130_2018': 0.7414, 'hmumu_wminush_M130_2018': 0.4676, 'hmumu_zh_M130_2018': 0.7899,
 
             'muon_2016B': 1., 'muon_2016C': 1., 'muon_2016D': 1., 'muon_2016E': 1., 
             'muon_2016F': 1., 'muon_2016G': 1., 'muon_2016H': 1.,
@@ -102,26 +133,47 @@ if __name__ == '__main__':
             'ttjets_2016': 1., 'ttjets_2017': 1., 'ttjets_2018': 1., # these from MY
             #'htautau_gluglu': br_htautau, 'htautau_vbf': br_htautau,
             
-            'hzg_gluglu_M120_2016': br_zg_m120*br_zll, 'hzg_tth_M120_2016': br_zg_m120*br_zll, 'hzg_vbf_M120_2016': br_zg_m120*br_zll, 
-            'hzg_wplush_M120_2016': br_zg_m120*br_zll, 'hzg_wminush_M120_2016': br_zg_m120*br_zll, 'hzg_zh_M120_2016': br_zg_m120*br_zll,
-            'hzg_gluglu_M120_2017': br_zg_m120*br_zll, 'hzg_tth_M120_2017': br_zg_m120*br_zll, 'hzg_vbf_M120_2017': br_zg_m120*br_zll, 
-            'hzg_wplush_M120_2017': br_zg_m120*br_zll, 'hzg_wminush_M120_2017': br_zg_m120*br_zll, 'hzg_zh_M120_2017': br_zg_m120*br_zll,
-            'hzg_gluglu_M120_2018': br_zg_m120*br_zll, 'hzg_tth_M120_2018': br_zg_m120*br_zll, 'hzg_vbf_M120_2018': br_zg_m120*br_zll, 
-            'hzg_wplush_M120_2018': br_zg_m120*br_zll, 'hzg_wminush_M120_2018': br_zg_m120*br_zll, 'hzg_zh_M120_2018': br_zg_m120*br_zll,
+            'hzg_gluglu_M120_2016': br_hzg_m120*br_zll, 'hzg_tth_M120_2016': br_hzg_m120*br_zll, 'hzg_vbf_M120_2016': br_hzg_m120*br_zll, 
+            'hzg_wplush_M120_2016': br_hzg_m120*br_zll, 'hzg_wminush_M120_2016': br_hzg_m120*br_zll, 'hzg_zh_M120_2016': br_hzg_m120*br_zll,
+            'hzg_gluglu_M120_2017': br_hzg_m120*br_zll, 'hzg_tth_M120_2017': br_hzg_m120*br_zll, 'hzg_vbf_M120_2017': br_hzg_m120*br_zll, 
+            'hzg_wplush_M120_2017': br_hzg_m120*br_zll, 'hzg_wminush_M120_2017': br_hzg_m120*br_zll, 'hzg_zh_M120_2017': br_hzg_m120*br_zll,
+            'hzg_gluglu_M120_2018': br_hzg_m120*br_zll, 'hzg_tth_M120_2018': br_hzg_m120*br_zll, 'hzg_vbf_M120_2018': br_hzg_m120*br_zll, 
+            'hzg_wplush_M120_2018': br_hzg_m120*br_zll, 'hzg_wminush_M120_2018': br_hzg_m120*br_zll, 'hzg_zh_M120_2018': br_hzg_m120*br_zll,
 
-            'hzg_gluglu_M125_2016': br_zg_m125*br_zll, 'hzg_tth_M125_2016': br_zg_m125*br_zll, 'hzg_vbf_M125_2016': br_zg_m125*br_zll, 
-            'hzg_wplush_M125_2016': br_zg_m125*br_zll, 'hzg_wminush_M125_2016': br_zg_m125*br_zll, 'hzg_zh_M125_2016': br_zg_m125*br_zll,
-            'hzg_gluglu_M125_2017': br_zg_m125*br_zll, 'hzg_tth_M125_2017': br_zg_m125*br_zll, 'hzg_vbf_M125_2017': br_zg_m125*br_zll, 
-            'hzg_wplush_M125_2017': br_zg_m125*br_zll, 'hzg_wminush_M125_2017': br_zg_m125*br_zll, 'hzg_zh_M125_2017': br_zg_m125*br_zll,
-            'hzg_gluglu_M125_2018': br_zg_m125*br_zll, 'hzg_tth_M125_2018': br_zg_m125*br_zll, 'hzg_vbf_M125_2018': br_zg_m125*br_zll, 
-            'hzg_wplush_M125_2018': br_zg_m125*br_zll, 'hzg_wminush_M125_2018': br_zg_m125*br_zll, 'hzg_zh_M125_2018': br_zg_m125*br_zll,
+            'hzg_gluglu_M125_2016': br_hzg_m125*br_zll, 'hzg_tth_M125_2016': br_hzg_m125*br_zll, 'hzg_vbf_M125_2016': br_hzg_m125*br_zll, 
+            'hzg_wplush_M125_2016': br_hzg_m125*br_zll, 'hzg_wminush_M125_2016': br_hzg_m125*br_zll, 'hzg_zh_M125_2016': br_hzg_m125*br_zll,
+            'hzg_gluglu_M125_2017': br_hzg_m125*br_zll, 'hzg_tth_M125_2017': br_hzg_m125*br_zll, 'hzg_vbf_M125_2017': br_hzg_m125*br_zll, 
+            'hzg_wplush_M125_2017': br_hzg_m125*br_zll, 'hzg_wminush_M125_2017': br_hzg_m125*br_zll, 'hzg_zh_M125_2017': br_hzg_m125*br_zll,
+            'hzg_gluglu_M125_2018': br_hzg_m125*br_zll, 'hzg_tth_M125_2018': br_hzg_m125*br_zll, 'hzg_vbf_M125_2018': br_hzg_m125*br_zll, 
+            'hzg_wplush_M125_2018': br_hzg_m125*br_zll, 'hzg_wminush_M125_2018': br_hzg_m125*br_zll, 'hzg_zh_M125_2018': br_hzg_m125*br_zll,
             
-            'hzg_gluglu_M130_2016': br_zg_m130*br_zll, 'hzg_tth_M130_2016': br_zg_m130*br_zll, 'hzg_vbf_M130_2016': br_zg_m130*br_zll, 
-            'hzg_wplush_M130_2016': br_zg_m130*br_zll, 'hzg_wminush_M130_2016': br_zg_m130*br_zll, 'hzg_zh_M130_2016': br_zg_m130*br_zll,
-            'hzg_gluglu_M130_2017': br_zg_m130*br_zll, 'hzg_tth_M130_2017': br_zg_m130*br_zll, 'hzg_vbf_M130_2017': br_zg_m130*br_zll, 
-            'hzg_wplush_M130_2017': br_zg_m130*br_zll, 'hzg_wminush_M130_2017': br_zg_m130*br_zll, 'hzg_zh_M130_2017': br_zg_m130*br_zll,
-            'hzg_gluglu_M130_2018': br_zg_m130*br_zll, 'hzg_tth_M130_2018': br_zg_m130*br_zll, 'hzg_vbf_M130_2018': br_zg_m130*br_zll, 
-            'hzg_wplush_M130_2018': br_zg_m130*br_zll, 'hzg_wminush_M130_2018': br_zg_m130*br_zll, 'hzg_zh_M130_2018': br_zg_m130*br_zll,
+            'hzg_gluglu_M130_2016': br_hzg_m130*br_zll, 'hzg_tth_M130_2016': br_hzg_m130*br_zll, 'hzg_vbf_M130_2016': br_hzg_m130*br_zll, 
+            'hzg_wplush_M130_2016': br_hzg_m130*br_zll, 'hzg_wminush_M130_2016': br_hzg_m130*br_zll, 'hzg_zh_M130_2016': br_hzg_m130*br_zll,
+            'hzg_gluglu_M130_2017': br_hzg_m130*br_zll, 'hzg_tth_M130_2017': br_hzg_m130*br_zll, 'hzg_vbf_M130_2017': br_hzg_m130*br_zll, 
+            'hzg_wplush_M130_2017': br_hzg_m130*br_zll, 'hzg_wminush_M130_2017': br_hzg_m130*br_zll, 'hzg_zh_M130_2017': br_hzg_m130*br_zll,
+            'hzg_gluglu_M130_2018': br_hzg_m130*br_zll, 'hzg_tth_M130_2018': br_hzg_m130*br_zll, 'hzg_vbf_M130_2018': br_hzg_m130*br_zll, 
+            'hzg_wplush_M130_2018': br_hzg_m130*br_zll, 'hzg_wminush_M130_2018': br_hzg_m130*br_zll, 'hzg_zh_M130_2018': br_hzg_m130*br_zll,
+            
+            'hmumu_gluglu_M120_2016': br_hmumu_m120, 'hmumu_tth_M120_2016': br_hmumu_m120, 'hmumu_vbf_M120_2016': br_hmumu_m120, 
+            'hmumu_wplush_M120_2016': br_hmumu_m120, 'hmumu_wminush_M120_2016': br_hmumu_m120, 'hmumu_zh_M120_2016': br_hmumu_m120,
+            'hmumu_gluglu_M120_2017': br_hmumu_m120, 'hmumu_tth_M120_2017': br_hmumu_m120, 'hmumu_vbf_M120_2017': br_hmumu_m120, 
+            'hmumu_wplush_M120_2017': br_hmumu_m120, 'hmumu_wminush_M120_2017': br_hmumu_m120, 'hmumu_zh_M120_2017': br_hmumu_m120,
+            'hmumu_gluglu_M120_2018': br_hmumu_m120, 'hmumu_tth_M120_2018': br_hmumu_m120, 'hmumu_vbf_M120_2018': br_hmumu_m120, 
+            'hmumu_wplush_M120_2018': br_hmumu_m120, 'hmumu_wminush_M120_2018': br_hmumu_m120, 'hmumu_zh_M120_2018': br_hmumu_m120,
+
+            'hmumu_gluglu_M125_2016': br_hmumu_m125, 'hmumu_tth_M125_2016': br_hmumu_m125, 'hmumu_vbf_M125_2016': br_hmumu_m125, 
+            'hmumu_wplush_M125_2016': br_hmumu_m125, 'hmumu_wminush_M125_2016': br_hmumu_m125, 'hmumu_zh_M125_2016': br_hmumu_m125,
+            'hmumu_gluglu_M125_2017': br_hmumu_m125, 'hmumu_tth_M125_2017': br_hmumu_m125, 'hmumu_vbf_M125_2017': br_hmumu_m125, 
+            'hmumu_wplush_M125_2017': br_hmumu_m125, 'hmumu_wminush_M125_2017': br_hmumu_m125, 'hmumu_zh_M125_2017': br_hmumu_m125,
+            'hmumu_gluglu_M125_2018': br_hmumu_m125, 'hmumu_tth_M125_2018': br_hmumu_m125, 'hmumu_vbf_M125_2018': br_hmumu_m125, 
+            'hmumu_wplush_M125_2018': br_hmumu_m125, 'hmumu_wminush_M125_2018': br_hmumu_m125, 'hmumu_zh_M125_2018': br_hmumu_m125,
+            
+            'hmumu_gluglu_M130_2016': br_hmumu_m130, 'hmumu_tth_M130_2016': br_hmumu_m130, 'hmumu_vbf_M130_2016': br_hmumu_m130, 
+            'hmumu_wplush_M130_2016': br_hmumu_m130, 'hmumu_wminush_M130_2016': br_hmumu_m130, 'hmumu_zh_M130_2016': br_hmumu_m130,
+            'hmumu_gluglu_M130_2017': br_hmumu_m130, 'hmumu_tth_M130_2017': br_hmumu_m130, 'hmumu_vbf_M130_2017': br_hmumu_m130, 
+            'hmumu_wplush_M130_2017': br_hmumu_m130, 'hmumu_wminush_M130_2017': br_hmumu_m130, 'hmumu_zh_M130_2017': br_hmumu_m130,
+            'hmumu_gluglu_M130_2018': br_hmumu_m130, 'hmumu_tth_M130_2018': br_hmumu_m130, 'hmumu_vbf_M130_2018': br_hmumu_m130, 
+            'hmumu_wplush_M130_2018': br_hmumu_m130, 'hmumu_wminush_M130_2018': br_hmumu_m130, 'hmumu_zh_M130_2018': br_hmumu_m130,
 
             'muon_2016B': 1., 'muon_2016C': 1., 'muon_2016D': 1., 'muon_2016E': 1., 
             'muon_2016F': 1., 'muon_2016G': 1., 'muon_2016H': 1.,
@@ -135,9 +187,12 @@ if __name__ == '__main__':
 
     periods = [2016, 2017, 2018]
     luminosity = {2016: 35.9e3, 2017: 41.5e3, 2018: 59.8e3}
-
+    channels = ['mmg', 'eeg']
 
     sf_dict = {}
+
+    #mingyan_data = pd.read_csv('data/mingyan_final_data/all_data.csv')
+    mingyan_data = pd.read_csv('data/mingyan_final_data/all_data_no_cuts.csv')
 
     for period, channel in itertools.product(periods, channels):
         datasets = samples[period][channel]
@@ -161,6 +216,8 @@ if __name__ == '__main__':
             outTree.create_branches({'pt_weight': 'F'})
             outTree.create_branches({'useTMVA': 'F'})
             outTree.create_branches({'corrPhotonMVA': 'F'})
+            outTree.create_branches({'llgMKinMY': 'F'})
+            outTree.create_branches({'isMingYanData': 'I'})
 
             # compute the MC scale factor
             n_gen = inputFile['TotalEvents_{0}'.format(dataset)].GetBinContent(1)
@@ -181,6 +238,9 @@ if __name__ == '__main__':
                 event = evt.evtNumber
 
                 outTree.mc_sf = sf
+
+                outTree.llgMKinMY = evt.llgMKin # by default use my own kin fit result
+                outTree.isMingYanData = 0
                
                 # DY veto
                 if 'zjets' in dataset:
@@ -188,7 +248,7 @@ if __name__ == '__main__':
                         continue
 
                 # ZH lepton tag cleaning
-                if (('hzg_zh' in dataset) and evt.isLeptonTag and !(evt.leptonOneMatched and evt.leptonTwoMatched)):
+                if (('hzg_zh' in dataset) and evt.isLeptonTag and not (evt.leptonOneMatched and evt.leptonTwoMatched)):
                     continue
                 
                 # split signal in half for MVA training
@@ -219,7 +279,7 @@ if __name__ == '__main__':
 
                 # using Ming-Yan weights
                 pt_weight = 1.
-                if (dataset in mc_17 or dataset in mc_18) and not ('hzg' in dataset):
+                if (dataset in mc_17 or dataset in mc_18) and not ('hzg' in dataset or 'hmumu' in dataset):
                     for i in range(len(pt_weights.alledges)-1):
                         if pt_weights.alledges[i] < evt.llgPt and evt.llgPt < pt_weights.alledges[i+1]:
                             pt_weight = pt_weights.allvalues[i]
@@ -229,6 +289,20 @@ if __name__ == '__main__':
                 outTree.corrPhotonMVA = evt.photonMVA
                 if 0.97 <= evt.photonMVAWeight <= 1.03:
                     outTree.corrPhotonMVA *= evt.photonMVAWeight 
+
+                if 'muon' in dataset or 'electron' in dataset:
+                    this_evt_mingyan = mingyan_data.query('run == {0} and lumi == {1} and evt == {2}'.format(evt.runNumber, evt.lumiSection, evt.evtNumber))
+                    if this_evt_mingyan.shape[0] > 0:
+                        this_mass = this_evt_mingyan['CMS_hzg_mass'].values[0]
+                        outTree.llgMKinMY = this_mass
+                        outTree.isMingYanData = 1
+                    else:
+                        this_mass_mingyan = mingyan_data.query('run == {0} and lumi == {1} and abs(llgMRaw - {2}) <= 0.001'.format(evt.runNumber, evt.lumiSection, evt.llgM))
+                        if this_mass_mingyan.shape[0] > 0:
+                            this_mass = this_mass_mingyan['CMS_hzg_mass'].values[0]
+                            outTree.llgMKinMY = this_mass
+                            outTree.evtNumber = this_mass_mingyan['evt'].values[0]
+                            outTree.isMingYanData = 1
  
                 outTree.Fill()
 

@@ -74,11 +74,11 @@ if __name__ == '__main__':
         print('running over: {0}, {1}'.format(period, channel))
         for dataset in tqdm(datasets):
             for cat in categories:
-                if (channel == 'mmg' or channel == 'eeg') and cat == 'lepton':
-                    continue
-                if channel == 'eeg' and dataset == 'hzg_tth_M120_2017':
-                    yield_dict['{0}_{1}_{2}'.format(dataset, channel, cat)] = 0.
-                    continue
+                #if (channel == 'mmg' or channel == 'eeg') and cat == 'lepton':
+                #    continue
+                #if channel == 'eeg' and dataset == 'hzg_tth_M120_2017':
+                #    yield_dict['{0}_{1}_{2}'.format(dataset, channel, cat)] = 0.
+                #    continue
                 #if channel == 'eeg' and dataset == 'hzg_tth_M125_2018':
                 #    yield_dict['{0}_{1}_{2}'.format(dataset, channel, cat)] = 0.
                 #    continue

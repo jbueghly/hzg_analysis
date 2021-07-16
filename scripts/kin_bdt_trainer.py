@@ -23,16 +23,12 @@ if __name__ == '__main__':
     mc = {2016: mc_16, 2017: mc_17, 2018: mc_18}
 
     inputFilesDir = 'data/step1_sfs'
-    #inputFilesDir = 'data/step1_sfs/WPMingyanV2'
-    outputWeightsDir = 'trained_bdts/reanalysis_2'
+    outputWeightsDir = 'trained_bdts'
  
     print('training combined kinematic BDT')
     print('setting up TMVA')
 
-    #outFileName = 'trained_bdts/kin_bdt_combined_james_output_file_half_signal.root' 
-    #outFileName = 'trained_bdts/kin_bdt_combined_james_output_file_half_signal_half_background.root'
-    outFileName = 'trained_bdts/reanalysis_2/kin_bdt_combined_james_output_file.root'
-    #outFileName = 'trained_bdts/kin_bdt_2016_with_obj_match.root'
+    outFileName = 'trained_bdts/kin_bdt_combined_james_output_file.root'
     outputFile = r.TFile(outFileName, 'RECREATE')
 
     t.Tools.Instance() 
@@ -52,15 +48,12 @@ if __name__ == '__main__':
             }
 
 
-    #factory = t.Factory('kin_bdt_combined_james_current_half_signal', outputFile, '!V:!Silent:Color:DrawProgressBar:Transformations=I;D;G,D:AnalysisType=Classification')
-    #factory = t.Factory('kin_bdt_combined_james_current_half_signal_half_background', outputFile, '!V:!Silent:Color:DrawProgressBar:Transformations=I;D;G,D:AnalysisType=Classification')
     factory = t.Factory('kin_bdt_combined_james_current', outputFile, '!V:!Silent:Color:DrawProgressBar:Transformations=I;D;G,D:AnalysisType=Classification')
     factory.Print()
         
     t.gConfig().GetIONames().fWeightFileDir = outputWeightsDir
     dataloader = t.DataLoader(".")
 
-    #dataloader.AddVariable('zgLittleThetaMY', 'zgLittleThetaMY', 'zgLittleThetaMY', 'F')
     dataloader.AddVariable('zgLittleTheta', 'zgLittleTheta', 'zgLittleTheta', 'F')
     dataloader.AddVariable('zgBigTheta', 'zgBigTheta', 'zgBigTheta', 'F')
     dataloader.AddVariable('llgPtOverM', 'llgPtOverM', 'llgPtOverM', 'F')
@@ -68,8 +61,8 @@ if __name__ == '__main__':
     dataloader.AddVariable('leptonTwoEta', 'leptonTwoEta', 'leptonTwoEta', 'F')
     dataloader.AddVariable('photonEta', 'photonEta', 'photonEta', 'F')
     dataloader.AddVariable('zgPhi', 'zgPhi', 'zgPhi', 'F')
-    dataloader.AddVariable('photonMVA', 'photonMVA', 'photonMVA', 'F')
-    #dataloader.AddVariable('corrPhotonMVA', 'corrPhotonMVA', 'corrPhotonMVA', 'F')
+    #dataloader.AddVariable('photonMVA', 'photonMVA', 'photonMVA', 'F')
+    dataloader.AddVariable('corrPhotonMVA', 'corrPhotonMVA', 'corrPhotonMVA', 'F')
     dataloader.AddVariable('photonERes', 'photonERes', 'photonERes', 'F')
     dataloader.AddVariable('lPhotonDRMin', 'lPhotonDRMin', 'lPhotonDRMin', 'F')
     dataloader.AddVariable('lPhotonDRMax', 'lPhotonDRMax', 'lPhotonDRMax', 'F')
@@ -111,36 +104,6 @@ if __name__ == '__main__':
     bkg_zg_ewk_18 = inputFile.Get('zg_ewk_2018')
     bkg_ttjets_18 = inputFile.Get('ttjets_2018')
 
-    #mc_sfs = pickle.load(open('data/mc_sfs/golden_1/mc_sfs.pkl', 'rb'))
-    #print(mc_sfs)
-  
-    #dataloader.AddSignalTree(sig_ggf_16, mc_sfs[2016]['hzg_gluglu_M125_2016'])
-    #dataloader.AddSignalTree(sig_vbf_16, mc_sfs[2016]['hzg_vbf_M125_2016'])
-    #dataloader.AddSignalTree(sig_tth_16, mc_sfs[2016]['hzg_tth_M125_2016'])
-    #dataloader.AddSignalTree(sig_zh_16, mc_sfs[2016]['hzg_zh_M125_2016'])
-    #dataloader.AddSignalTree(sig_wplush_16, mc_sfs[2016]['hzg_wplush_M125_2016'])
-    #dataloader.AddSignalTree(sig_wminush_16, mc_sfs[2016]['hzg_wminush_M125_2016'])
-    #dataloader.AddBackgroundTree(bkg_zjets_16, mc_sfs[2016]['zjets_M50_2016'])
-    #dataloader.AddBackgroundTree(bkg_zg_16, mc_sfs[2016]['zg_llg_2016'])
-    #
-    #dataloader.AddSignalTree(sig_ggf_17, mc_sfs[2017]['hzg_gluglu_M125_2017'])
-    #dataloader.AddSignalTree(sig_vbf_17, mc_sfs[2017]['hzg_vbf_M125_2017'])
-    #dataloader.AddSignalTree(sig_tth_17, mc_sfs[2017]['hzg_tth_M125_2017'])
-    #dataloader.AddSignalTree(sig_zh_17, mc_sfs[2017]['hzg_zh_M125_2017'])
-    #dataloader.AddSignalTree(sig_wplush_17, mc_sfs[2017]['hzg_wplush_M125_2017'])
-    #dataloader.AddSignalTree(sig_wminush_17, mc_sfs[2017]['hzg_wminush_M125_2017'])
-    #dataloader.AddBackgroundTree(bkg_zjets_17, mc_sfs[2017]['zjets_M50_2017'])
-    #dataloader.AddBackgroundTree(bkg_zg_17, mc_sfs[2017]['zg_llg_2017'])
-    
-    #dataloader.AddSignalTree(sig_ggf_18, mc_sfs[2018]['hzg_gluglu_M125_2018'])
-    #dataloader.AddSignalTree(sig_vbf_18, mc_sfs[2018]['hzg_vbf_M125_2018'])
-    #dataloader.AddSignalTree(sig_tth_18, mc_sfs[2018]['hzg_tth_M125_2018'])
-    #dataloader.AddSignalTree(sig_zh_18, mc_sfs[2018]['hzg_zh_M125_2018'])
-    #dataloader.AddSignalTree(sig_wplush_18, mc_sfs[2018]['hzg_wplush_M125_2018'])
-    #dataloader.AddSignalTree(sig_wminush_18, mc_sfs[2018]['hzg_wminush_M125_2018'])
-    #dataloader.AddBackgroundTree(bkg_zjets_18, mc_sfs[2018]['zjets_M50_2018'])
-    #dataloader.AddBackgroundTree(bkg_zg_18, mc_sfs[2018]['zg_llg_2018'])
-    
 
     dataloader.AddSignalTree(sig_ggf_16)
     dataloader.AddSignalTree(sig_vbf_16)
@@ -150,8 +113,8 @@ if __name__ == '__main__':
     dataloader.AddSignalTree(sig_wminush_16)
     dataloader.AddBackgroundTree(bkg_zjets_16)
     dataloader.AddBackgroundTree(bkg_zg_16)
-    ###dataloader.AddBackgroundTree(bkg_zg_ewk_16)
-    ###dataloader.AddBackgroundTree(bkg_ttjets_16)
+    dataloader.AddBackgroundTree(bkg_zg_ewk_16)
+    dataloader.AddBackgroundTree(bkg_ttjets_16)
 
     dataloader.AddSignalTree(sig_ggf_17)
     dataloader.AddSignalTree(sig_vbf_17)
@@ -161,9 +124,9 @@ if __name__ == '__main__':
     dataloader.AddSignalTree(sig_wminush_17)
     dataloader.AddBackgroundTree(bkg_zjets_17)
     dataloader.AddBackgroundTree(bkg_zg_17)
-    ###dataloader.AddBackgroundTree(bkg_zg_ewk_17)
-    ###dataloader.AddBackgroundTree(bkg_ttjets_17)
-    #
+    dataloader.AddBackgroundTree(bkg_zg_ewk_17)
+    dataloader.AddBackgroundTree(bkg_ttjets_17)
+    
     dataloader.AddSignalTree(sig_ggf_18)
     dataloader.AddSignalTree(sig_vbf_18)
     dataloader.AddSignalTree(sig_tth_18)
@@ -172,15 +135,11 @@ if __name__ == '__main__':
     dataloader.AddSignalTree(sig_wminush_18)
     dataloader.AddBackgroundTree(bkg_zjets_18)
     dataloader.AddBackgroundTree(bkg_zg_18)
-    ##dataloader.AddBackgroundTree(bkg_zg_ewk_18)
-    ##dataloader.AddBackgroundTree(bkg_ttjets_18)
+    dataloader.AddBackgroundTree(bkg_zg_ewk_18)
+    dataloader.AddBackgroundTree(bkg_ttjets_18)
  
     dataloader.SetSignalWeightExpression('eventWeight*genWeight*mc_sf*pt_weight*useTMVA')
-    #dataloader.SetSignalWeightExpression('eventWeight*genWeight*pt_weight*useTMVA')
-    #dataloader.SetSignalWeightExpression('genWeight*mc_sf*useTMVA')
     dataloader.SetBackgroundWeightExpression('eventWeight*genWeight*mc_sf*pt_weight*useTMVA')
-    #dataloader.SetBackgroundWeightExpression('eventWeight*genWeight*pt_weight*useTMVA')
-    #dataloader.SetBackgroundWeightExpression('genWeight*mc_sf*useTMVA')
     dataloader.PrepareTrainingAndTestTree(r.TCut(''), r.TCut(''), 'SplitMode=Random:NormMode=NumEvents:!V')
 
     print('booking the methods')
@@ -190,8 +149,6 @@ if __name__ == '__main__':
 
     if Use['BDT']:
         factory.BookMethod(dataloader, t.Types.kBDT, 'BDT', '!H:!V:IgnoreNegWeightsInTraining:NTrees=3500:nEventsMin=40:MaxDepth=4:BoostType=AdaBoost:AdaBoostBeta=0.6:SeparationType=GiniIndex:nCuts=20')
-    #if Use['BDT']:
-    #    factory.BookMethod(dataloader, t.Types.kBDT, 'BDT', '!H:!V:IgnoreNegWeightsInTraining:NTrees=800:MinNodeSize=0.005:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.6:SeparationType=GiniIndex:nCuts=20')
 
     if Use['BDTRT']:
         factory.BookMethod(dataloader, t.Types.kBDT, 'BDTRT', '!H:!V:IgnoreNegWeightsInTraining:NTrees=1000:nEventsMin=40:MaxDepth=5:UseRandomisedTrees=True:BoostType=AdaBoost:AdaBoostBeta=0.6:SeparationType=GiniIndex:nCuts=20:NNodesMax=5')
